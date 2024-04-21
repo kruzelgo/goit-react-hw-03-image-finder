@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const ImageGalleryItem = ({ id, src, onClick }) => (
+const ImageGalleryItem = ({ id, imageUrl, onClick }) => (
   <li className="imageGalleryItem" key={id} onClick={() => onClick(id)}>
-    <img src={src} alt="" id={id} className="imageGalleryItem-image" />
+    <img src={imageUrl} alt="" id={id} className="imageGalleryItem-image" />
   </li>
 );
 
 ImageGalleryItem.propTypes = {
-  src: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

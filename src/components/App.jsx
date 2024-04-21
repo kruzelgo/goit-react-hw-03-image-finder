@@ -16,7 +16,7 @@ export class App extends Component {
     page: 1,
     loading: false,
     showModal: false,
-    modalImage: '',
+    selectedImageUrl: '',
     modalAlt: '',
     loadMore: true,
   };
@@ -43,8 +43,32 @@ export class App extends Component {
 
       const data = await response.json();
       const { hits, totalHits } = data;
+
+      //     const processedHits = hits.map(({ id, webformatURL, largeImageURL }) => ({
+      //       id,
+      //       webformatURL,
+      //       largeImageURL,
+      //     }));
+
+      //     this.setState(prevState => ({
+      //       images: [...prevState.images, ...processedHits],
+      //       loadMore: page < Math.ceil(totalHits / perPage),
+      //     }));
+      //   } catch (error) {
+      //     console.error('Error fetching images:', error);
+      //   } finally {
+      //     this.setState({ loading: false });
+      //   }
+      // };
+
+      const newImages = hits.filter(newImage =>
+        this.state.images.every(
+          existingImage => existingImage.id !== newImage.id
+        )
+      );
+
       this.setState(prevState => ({
-        images: [...prevState.images, ...hits],
+        images: [...prevState.images, ...newImages],
         loadMore: page < Math.ceil(totalHits / perPage),
       }));
     } catch (error) {
@@ -69,9 +93,9 @@ export class App extends Component {
     );
   };
 
-  handleImageClick = (imageSrc, imageAlt) => {
+  handleImageClick = (imageUrl, imageAlt) => {
     this.setState({
-      modalImage: imageSrc,
+      selectedImageUrl: imageUrl,
       modalAlt: imageAlt,
       showModal: true,
     });
@@ -82,7 +106,7 @@ export class App extends Component {
   };
 
   render() {
-    const { images, loading, showModal, modalImage, modalAlt, loadMore } =
+    const { images, loading, showModal, selectedImageUrl, modalAlt, loadMore } =
       this.state;
 
     return (
@@ -111,8 +135,8 @@ export class App extends Component {
           )}
           {showModal && (
             <Modal
-              imgUrl={modalImage}
-              alt={modalAlt}
+              imageUrl={selectedImageUrl}
+              alt={modalAlt || 'Image'}
               onClose={this.handleCloseModal}
             />
           )}
