@@ -214,3 +214,9 @@ img {
   justify-content: center;
   margin-top: 15px;
 }
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

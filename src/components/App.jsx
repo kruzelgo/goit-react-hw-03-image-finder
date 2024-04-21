@@ -18,7 +18,8 @@ export class App extends Component {
     showModal: false,
     selectedImageUrl: '',
     modalAlt: '',
-    loadMore: true,
+    loadMore: false,
+    searched: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -44,23 +45,6 @@ export class App extends Component {
       const data = await response.json();
       const { hits, totalHits } = data;
 
-      //     const processedHits = hits.map(({ id, webformatURL, largeImageURL }) => ({
-      //       id,
-      //       webformatURL,
-      //       largeImageURL,
-      //     }));
-
-      //     this.setState(prevState => ({
-      //       images: [...prevState.images, ...processedHits],
-      //       loadMore: page < Math.ceil(totalHits / perPage),
-      //     }));
-      //   } catch (error) {
-      //     console.error('Error fetching images:', error);
-      //   } finally {
-      //     this.setState({ loading: false });
-      //   }
-      // };
-
       const newImages = hits.filter(newImage =>
         this.state.images.every(
           existingImage => existingImage.id !== newImage.id
@@ -79,7 +63,7 @@ export class App extends Component {
   };
 
   handleSubmit = query => {
-    this.setState({ query, images: [], page: 1 }, () => {
+    this.setState({ query, images: [], page: 1, searched: true }, () => {
       this.fetchData();
     });
   };
@@ -130,9 +114,16 @@ export class App extends Component {
               onImageClick={this.handleImageClick}
             />
           )}
+          {loadMore && (
+            <Button onLoadMore={this.handleLoadMore} loading={loading} />
+          )}
+          {/* {loadMore && !loading && images.length > 0 && (
+            <Button onLoadMore={this.handleLoadMore} />
+          )} */}
+          {/* {loading && <Loader />}{' '}
           {loadMore && !loading && images.length > 0 && (
             <Button onLoadMore={this.handleLoadMore} />
-          )}
+          )} */}
           {showModal && (
             <Modal
               imageUrl={selectedImageUrl}
