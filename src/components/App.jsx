@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
-import Loader from './Loader';
+// import Loader from './Loader';
 import Button from './Button';
 import Modal from './Modal';
 import './styles.css';
@@ -106,24 +106,11 @@ export class App extends Component {
       >
         <div>
           <Searchbar onSubmit={this.handleSubmit} />
-          {loading ? (
-            <Loader />
-          ) : (
-            <ImageGallery
-              images={images}
-              onImageClick={this.handleImageClick}
-            />
-          )}
+          <ImageGallery images={images} onImageClick={this.handleImageClick} />
+
           {loadMore && (
             <Button onLoadMore={this.handleLoadMore} loading={loading} />
           )}
-          {/* {loadMore && !loading && images.length > 0 && (
-            <Button onLoadMore={this.handleLoadMore} />
-          )} */}
-          {/* {loading && <Loader />}{' '}
-          {loadMore && !loading && images.length > 0 && (
-            <Button onLoadMore={this.handleLoadMore} />
-          )} */}
           {showModal && (
             <Modal
               imageUrl={selectedImageUrl}
